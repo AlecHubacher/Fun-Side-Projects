@@ -60,7 +60,7 @@ public class Main{
 		 	.url("https://imdb8.p.rapidapi.com/title/find?q=Doctor%20Who")
 		 	.get()
 		 	.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-		 	.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+		 	.addHeader("x-rapidapi-key", "YOUR API KEY")
 		 	.build();
 
 		 Response response = client.newCall(request).execute();
@@ -90,7 +90,7 @@ public class Main{
 				.url("https://imdb8.p.rapidapi.com/title/get-seasons?tconst="+showID)
 				.get()
 				.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-				.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+				.addHeader("x-rapidapi-key", "YOUR API KEY")
 				//alternate key be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f 
 				//currently using dads so i can go over 1k requests per month
 				//dads api key 7985971783mshcbfa8d0de274a59p1f40d4jsn29ea8b791ee8
@@ -119,9 +119,7 @@ public class Main{
 						.url("https://imdb8.p.rapidapi.com/title/get-seasons?tconst="+showID)
 						.get()
 						.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-						.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
-						//alternate key be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f 
-						//currently using dads so i can go over 1k requests per month
+						.addHeader("x-rapidapi-key", "YOUR API KEY")
 						.build();
 
 					Response response2 = client2.newCall(request2).execute();
@@ -147,7 +145,7 @@ public class Main{
 						.url("https://imdb8.p.rapidapi.com/title/get-ratings?tconst="+ep1ID)
 						.get()
 						.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-						.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+						.addHeader("x-rapidapi-key", "YOUR API KEY")
 						.build();
 
 					Response response3 = client.newCall(request3).execute();
