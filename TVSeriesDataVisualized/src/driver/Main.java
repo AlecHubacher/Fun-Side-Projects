@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
@@ -81,8 +82,18 @@ public class Main{
 			
 			String showID = obj.getJSONArray("results").getJSONObject(0).getString("id").
 				substring(7,obj.getJSONArray("results").getJSONObject(0).getString("id").length()-1);
+			System.out.println("here is the ID: "+showID);
+			
+			String imgUrl = obj.getJSONArray("results").getJSONObject(0).getJSONObject("image").getString("url");
+			URL url = new URL(imgUrl);
+			BufferedImage image = ImageIO.read(url);
+			ImageIcon icon = new ImageIcon(image);
+			Image image2 = icon.getImage();
+			Image newimg = image2.getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH);
+			icon = new ImageIcon(newimg);
 			
 			OkHttpClient clientEpAmount = new OkHttpClient();
+			
 
 			clientEpAmount.setConnectTimeout(30, TimeUnit.SECONDS);
 			clientEpAmount.setReadTimeout(30, TimeUnit.SECONDS);
@@ -105,7 +116,7 @@ public class Main{
 			//We need this season bar to have its size before the instance is created
 			Chart.setUpSeasonBar(amountSea);
 			
-			Chart m = new Chart();
+			Chart m = new Chart(icon);
 		//amountSea+1 for loop
 		for(int i=1;i<2;++i)
 		{	
@@ -114,11 +125,11 @@ public class Main{
 			int epNum = obj2.getJSONObject(i-1).getJSONArray("episodes").length();
 			
 			//epNum+1 for loop 
-			 for(int j=1;j<4;++j)
+			 for(int j=1;j<2;++j)
 			  {
 				 
 				 String epID = obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id")
-			.substring(7, obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id").length()-1);
+							.substring(7, obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id").length()-1);
 				 
 				 if(count==1)
 				 {
