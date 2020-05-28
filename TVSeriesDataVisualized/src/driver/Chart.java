@@ -67,7 +67,6 @@ public class Chart {
 		episode.setPreferredSize(new Dimension(40,40));
 		JLabel epRateLab = new JLabel(Double.toString(rating));
 		episode.add(epRateLab);
-		//TMDB API KEY: 0839c1ef6f0ce62432d8be9f3ac130a6
 		//Green 9-10
 		//Yellow 8-8.9
 		//Orange 6.5-7.9
