@@ -36,6 +36,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.squareup.okhttp.*;
@@ -121,32 +122,46 @@ public class Main{
 				 
 				 if(count==1)
 				 {
-					 TimeUnit.SECONDS.sleep(1);
+					 TimeUnit.SECONDS.sleep(2);
 					 count=0;
 				 }
 
 					//Extract the rating of the Doctor Who episode
-					OkHttpClient client3 = new OkHttpClient();
+				 boolean serviceAvailable=false;
+				 double rating=0.0;
+				 do
+				 {
+					 try {
+					 OkHttpClient client3 = new OkHttpClient();
 
-					client3.setConnectTimeout(30, TimeUnit.SECONDS);
-					client3.setReadTimeout(30, TimeUnit.SECONDS);
-					client3.setWriteTimeout(30, TimeUnit.SECONDS);
-					
-					Request request3 = new Request.Builder()
+						client3.setConnectTimeout(30, TimeUnit.SECONDS);
+						client3.setReadTimeout(30, TimeUnit.SECONDS);
+						client3.setWriteTimeout(30, TimeUnit.SECONDS);
+
+						Request request3 = new Request.Builder()
 						.url("https://imdb8.p.rapidapi.com/title/get-ratings?tconst="+epID)
 						.get()
 						.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
 						.addHeader("x-rapidapi-key", "YOUR API KEY")
 						.build();
 
-					Response response3 = client.newCall(request3).execute();
-					count++;
-					String jsonStr3 = response3.body().string();
-					System.out.println("jsonStr3: "+jsonStr3);
+						Response response3 = client.newCall(request3).execute();
+						count++;
+						String jsonStr3 = response3.body().string();
+						System.out.println("jsonStr3: "+jsonStr3);
+
+						JSONObject obj3 = new JSONObject(jsonStr3);
+						rating=obj3.getDouble("rating");
+						System.out.println("***** its working now *****");
+						serviceAvailable=true;
+					 } catch(org.json.JSONException e)
+					 {
+						 System.out.println("Service Unavailable: Waiting 30 seconds and retrying request");
+						 TimeUnit.SECONDS.sleep(30);
+						 continue;
+					 }
+				 }while(!serviceAvailable);
 					
-					JSONObject obj3 = new JSONObject(jsonStr3);
-					//The rating of the current Doctor Who Episode
-					double rating = obj3.getDouble("rating");
 				 
 					Chart.seasonBar.get(i-1).add(m.createEpisodePanel(rating));	
 			  }
