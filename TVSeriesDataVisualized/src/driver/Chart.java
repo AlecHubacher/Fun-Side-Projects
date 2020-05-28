@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -88,7 +89,12 @@ public class Chart {
 		seasonBar.get(seaNum-1).add(season);
 	}
 	
-	public Chart()
+	public static String getImageUrl(String url)
+	{
+		return url;
+	}
+	
+	public Chart(ImageIcon icon)
 	{
 		//JPanel pane = new JPanel();
 				JPanel key; //This will be the panel that holds the key so the color information
@@ -151,7 +157,7 @@ public class Chart {
 				JPanel heading = new JPanel();
 				heading.setLayout(new BoxLayout(heading, BoxLayout.PAGE_AXIS));
 				heading.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				heading.add(new JLabel(new ImageIcon("C:\\Users\\Alec\\Pictures\\Saved Pictures\\DoctorDoOver.jpg")));
+				heading.add(new JLabel(icon));
 				c.fill = GridBagConstraints.NONE;
 				c.weightx = 0.5;
 				c.gridx = 2;
@@ -195,9 +201,27 @@ public class Chart {
 				{
 					seriesData.add(seasonBar.get(i));
 				}
-
+				
+				
+				/*PLAN FOR SEASON BAR IS TO ADD IT AS I ADD IN THE ACTUAL DATA ROW BY ROW
+				 * 
+				 * 
+				 * 
+				 */
 				JLabel labTest = new JLabel("we here");
 				epBar.add(labTest);
+				
+				
+				/*key = new JPanel();
+				JLabel lab4 = new JLabel("label 4");
+				key.add(lab4);
+				c.fill = GridBagConstraints.HORIZONTAL;
+				//make this component tall
+				c.weightx = 0.5;
+				c.gridwidth = 3;
+				c.gridx = 3;
+				c.gridy = 0;
+				pane.add(key, c);*/
 				 
 				key = new JPanel();
 				JLabel lab5 = new JLabel("label 5");
