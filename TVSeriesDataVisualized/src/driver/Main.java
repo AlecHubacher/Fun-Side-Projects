@@ -68,7 +68,7 @@ public class Main{
 		 	.url("https://imdb8.p.rapidapi.com/title/find?q="+tvSeries)
 		 	.get()
 		 	.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-		 	.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+		 	.addHeader("x-rapidapi-key", "YOUR API KEY")
 		 	.build();
 
 		 Response response = client.newCall(request).execute();
@@ -91,7 +91,7 @@ public class Main{
 				.url("https://imdb8.p.rapidapi.com/title/get-seasons?tconst="+showID)
 				.get()
 				.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-				.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+				.addHeader("x-rapidapi-key", "YOUR API KEY")
 				.build();
 
 			Response responseEpAmount = clientEpAmount.newCall(requestEpAmount).execute();
@@ -136,7 +136,7 @@ public class Main{
 						.url("https://imdb8.p.rapidapi.com/title/get-ratings?tconst="+epID)
 						.get()
 						.addHeader("x-rapidapi-host", "imdb8.p.rapidapi.com")
-						.addHeader("x-rapidapi-key", "be1981c7demsh84517f72732cd32p1a7d36jsnd7c884bcae4f")
+						.addHeader("x-rapidapi-key", "YOUR API KEY")
 						.build();
 
 					Response response3 = client.newCall(request3).execute();
