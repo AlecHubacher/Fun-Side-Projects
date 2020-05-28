@@ -106,19 +106,19 @@ public class Main{
 			Chart.setUpSeasonBar(amountSea);
 			
 			Chart m = new Chart();
-		
-		for(int i=1;i<amountSea+1;++i)
+		//amountSea+1 for loop
+		for(int i=1;i<2;++i)
 		{	
 			m.createSeasonSquare(i);
 			
 			int epNum = obj2.getJSONObject(i-1).getJSONArray("episodes").length();
 			
 			//epNum+1 for loop 
-			 for(int j=1;j<epNum+1;++j)
+			 for(int j=1;j<4;++j)
 			  {
 				 
 				 String epID = obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id")
-							.substring(7, obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id").length()-1);
+			.substring(7, obj2.getJSONObject(i-1).getJSONArray("episodes").getJSONObject(j-1).getString("id").length()-1);
 				 
 				 if(count==1)
 				 {
