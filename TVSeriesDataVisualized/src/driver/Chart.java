@@ -50,11 +50,11 @@ public class Chart {
 		//this did have declaration of rating
 		if(rating>=9.0)
 		{
-			episode.setBackground(Color.GREEN);
+			episode.setBackground(Color.GREEN.darker());
 		}
 		else if(rating>=8.0)
 		{
-			episode.setBackground(Color.YELLOW);
+			episode.setBackground(Color.GREEN);
 		}
 		else if(rating>=6.5)
 		{
@@ -67,6 +67,7 @@ public class Chart {
 		episode.setPreferredSize(new Dimension(40,40));
 		JLabel epRateLab = new JLabel(Double.toString(rating));
 		episode.add(epRateLab);
+		//TMDB API KEY: 0839c1ef6f0ce62432d8be9f3ac130a6
 		//Green 9-10
 		//Yellow 8-8.9
 		//Orange 6.5-7.9
@@ -157,7 +158,6 @@ public class Chart {
 				c.gridy = 0;
 				c.anchor=GridBagConstraints.PAGE_START;
 				pane.add(heading, c);
-				//sTOP HERE IF MESS UP
 				 
 				 //Episode Bar
 				//JPanel seriesData = new JPanel();
@@ -171,7 +171,7 @@ public class Chart {
 				whiteSq.setPreferredSize(new Dimension(40,40));
 				whiteSq.setBackground(Color.WHITE);
 				epBar.add(whiteSq);
-				for(int i=0;i<20;++i)//should probs put 25 cuz 22 is the avg
+				for(int i=0;i<25;++i)//should probs put 25 cuz 22 is the avg
 				{
 					JPanel ep = new JPanel();
 					JLabel epNum = new JLabel(Integer.toString(i+1));
@@ -195,27 +195,9 @@ public class Chart {
 				{
 					seriesData.add(seasonBar.get(i));
 				}
-				
-				
-				/*PLAN FOR SEASON BAR IS TO ADD IT AS I ADD IN THE ACTUAL DATA ROW BY ROW
-				 * 
-				 * 
-				 * 
-				 */
+
 				JLabel labTest = new JLabel("we here");
 				epBar.add(labTest);
-				
-				
-				/*key = new JPanel();
-				JLabel lab4 = new JLabel("label 4");
-				key.add(lab4);
-				c.fill = GridBagConstraints.HORIZONTAL;
-				//make this component tall
-				c.weightx = 0.5;
-				c.gridwidth = 3;
-				c.gridx = 3;
-				c.gridy = 0;
-				pane.add(key, c);*/
 				 
 				key = new JPanel();
 				JLabel lab5 = new JLabel("label 5");
