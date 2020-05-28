@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,21 +19,27 @@ public class Chart {
 	JPanel pane = new JPanel();
 	JPanel seriesData = new JPanel();
 	JFrame frame = new JFrame("Doctor Who Data"); 
-	JPanel row1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row9 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row10 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row11 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JPanel row12 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	static ArrayList<JPanel> seasonBar;
+	
+	public static void setUpSeasonBar(int size)
+	{
+		seasonBar = new ArrayList<JPanel>(size);
+		
+		for(int i=0;i<size;++i)
+		{
+			seasonBar.add(i, new JPanel(new FlowLayout(FlowLayout.LEFT)));
+		}
+	}
 	
 	
-
+	public String createShowTitle(String title)
+	{
+		title = title.replaceAll(" ", "%20");
+		return title;
+		
+	}
+	
+	
 	
 	public JPanel createEpisodePanel(double rating)
 	{
@@ -77,48 +84,8 @@ public class Chart {
 		season.setBackground(Color.BLACK);
 		seasonNum.setForeground(Color.WHITE);
 		
-		switch(seaNum)
-		{
-		case 1:
-			row1.add(season);
-			break;
-		case 2:
-			row2.add(season);
-			break;
-		case 3:
-			row3.add(season);
-			break;
-		case 4:
-			row4.add(season);
-			break;
-		case 5:
-			row5.add(season);
-			break;
-		case 6:
-			row6.add(season);
-			break;
-		case 7:
-			row7.add(season);
-			break;
-		case 8:
-			row8.add(season);
-			break;
-		case 9:
-			row9.add(season);
-			break;
-		case 10:
-			row10.add(season);
-			break;
-		case 11:
-			row11.add(season);
-			break;
-		case 12:
-			row12.add(season);
-			break;
-		default:
-			break;
 		
-		}
+		seasonBar.get(seaNum-1).add(season);
 	}
 	
 	public Chart()
@@ -205,7 +172,7 @@ public class Chart {
 				whiteSq.setPreferredSize(new Dimension(40,40));
 				whiteSq.setBackground(Color.WHITE);
 				epBar.add(whiteSq);
-				for(int i=0;i<15;++i)
+				for(int i=0;i<20;++i)//should probs put 25 cuz 22 is the avg
 				{
 					JPanel ep = new JPanel();
 					JLabel epNum = new JLabel(Integer.toString(i+1));
@@ -225,19 +192,10 @@ public class Chart {
 				
 				
 				//Adding panels to chart for data
-				seriesData.add(row1);
-				seriesData.add(row2);
-				seriesData.add(row3);
-				seriesData.add(row4);
-				seriesData.add(row5);
-				seriesData.add(row6);
-				seriesData.add(row7);
-				seriesData.add(row8);
-				seriesData.add(row9);
-				seriesData.add(row10);
-				seriesData.add(row11);
-				seriesData.add(row12);
-				
+				for(int i=0;i<seasonBar.size();++i)
+				{
+					seriesData.add(seasonBar.get(i));
+				}
 				
 				
 				/*PLAN FOR SEASON BAR IS TO ADD IT AS I ADD IN THE ACTUAL DATA ROW BY ROW
@@ -290,54 +248,6 @@ public class Chart {
 
 	public JFrame getFrame() {
 		return frame;
-	}
-
-	public JPanel getRow1() {
-		return row1;
-	}
-
-	public JPanel getRow2() {
-		return row2;
-	}
-
-	public JPanel getRow3() {
-		return row3;
-	}
-
-	public JPanel getRow4() {
-		return row4;
-	}
-
-	public JPanel getRow5() {
-		return row5;
-	}
-
-	public JPanel getRow6() {
-		return row6;
-	}
-
-	public JPanel getRow7() {
-		return row7;
-	}
-
-	public JPanel getRow8() {
-		return row8;
-	}
-
-	public JPanel getRow9() {
-		return row9;
-	}
-
-	public JPanel getRow10() {
-		return row10;
-	}
-
-	public JPanel getRow11() {
-		return row11;
-	}
-
-	public JPanel getRow12() {
-		return row12;
 	}
 
 	
