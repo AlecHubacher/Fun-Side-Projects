@@ -1,5 +1,5 @@
 # Fun-Side-Projects
-This repository holds projects that felt like would be fun to try and make.
+This repository holds projects that I have made in my free time.
 
 **Project 1** This shows a visualization of of a tv-series ratings per episode by accessing data using the imdb api through rapid api.
 
