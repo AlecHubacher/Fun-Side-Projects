@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import Game.Board;
+import Game.CheckMateDetection;
 import Game.Square;
 
 public abstract class Piece extends JComponent{
@@ -25,21 +26,33 @@ public abstract class Piece extends JComponent{
 	protected String pieceColor;
 	protected boolean firstMove=true;
 	public Square[][] board;
+	private String pieceType;
+	protected CheckMateDetection detect = null;
 	
 	
-	public Piece(Square[][] board, String imageFile,Square placement,String pieceColor) throws IOException
+	public Piece(Square[][] board, String imageFile,Square placement,String pieceColor, String pieceType) throws IOException
 	{
 		image = ImageIO.read(new File(imageFile));
 		//image = image.getScaledInstance(70, 70, Image.SCALE_DEFAULT);//maybe change board size later so images can be smaller
 		this.placement=placement;
 		this.pieceColor=pieceColor;
 		this.board=board;
+		this.pieceType=pieceType;
 	}
 	
+	public void setDetect(CheckMateDetection detect)
+	{
+		this.detect = detect;
+	}
 	
 	public Square getPlacement()
 	{
 		return placement;
+	}
+	
+	public String getPieceType()
+	{
+		return pieceType;
 	}
 	
 	public void setPlacement(Square sq)
@@ -57,9 +70,9 @@ public abstract class Piece extends JComponent{
 		return image;
 	}
 
-	public void setFirstMove(boolean move)
+	public void setFirstMoveDone()
 	{
-		firstMove=move;
+		firstMove=false;
 	}
 	
 	public abstract void populateLegalMoves();
@@ -69,6 +82,8 @@ public abstract class Piece extends JComponent{
 	public abstract void removeHighlights();
 	
 	public abstract ArrayList<Square> getLegalMoves();
+	
+	public abstract void clearLegalMoves();
 	
 	
 
