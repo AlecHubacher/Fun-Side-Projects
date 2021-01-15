@@ -16,30 +16,35 @@ import javax.swing.JPanel;
 
 import pieces.Piece;
 
-public class Square extends JComponent{
+public class Square extends JPanel{
 	
 	public Piece currentPiece;
 	private Color origSquareColor;
 	private Color newColor;
 	private int row;
 	private int col;
-	private int color;
+	private Color color;
 	private int xSize;
 	private int ySize;
 	private boolean needsRemoving=false;
 	private boolean needsRecoloring=false;
 	public Image image = ImageIO.read(new File("C:\\Users\\Alec\\Desktop\\FunProjects\\Chess\\resources\\wqueen.png"));
 	
-	public Square(int xCor, int yCor, int color,int xSize, int ySize) throws IOException
+	public Square(int xCor, int yCor, int xSize, int ySize, Color color) throws IOException
 	{
 		this.row=xCor;
 		this.col=yCor;
-		this.color=color;
 		this.xSize=xSize;
 		this.ySize=ySize;
-		this.setBackground(Color.BLACK);
+		//this.setBackground(Color.BLACK);
 		//this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+		this.origSquareColor=color;
 		this.setVisible(true);
+	}
+	
+	public void makeOriginalColor()
+	{
+		this.setBackground(origSquareColor);
 	}
 	
 	public void removePiece()
@@ -67,6 +72,8 @@ public class Square extends JComponent{
 		this.col=newYCor;
 	}
 	
+	
+	
 	public void resetColor()
 	{
 		needsRecoloring=true;
@@ -74,11 +81,21 @@ public class Square extends JComponent{
 	
 	public void highlight()
 	{
-		this.color=3;
+		this.setBackground(new Color(255,223,101,255));
 	}
-	public void newColor(int c)
+	
+	public void highlightMain()
 	{
-		if(c==1)
+		this.setBackground(new Color(255,255,0));
+	}
+	
+	public void makeCheckColor()
+	{
+		this.color=new Color(255,0,0);
+	}
+	/*public void newColor(Color c)
+	{
+		if(c==Color.BROWN)//this is supposed to be brown
 		{
 			newColor=new Color(153, 102, 51);
 		}
@@ -91,7 +108,7 @@ public class Square extends JComponent{
 			
 		}
 		color=c;
-	}
+	}*/
 	
 	public Color getSquareColor()
 	{
@@ -102,67 +119,10 @@ public class Square extends JComponent{
 	{
 		super.paintComponent(g);
 		
-		if(needsRemoving)
-		{
-			g.setColor(origSquareColor);
-			g.fillRect(this.row, this.col, xSize, ySize);
-			needsRemoving=false;
-			return;
-		}
-		
-		if(needsRecoloring)
-		{
-			System.out.println("needs recoloring complete");
-			g.setColor(origSquareColor);
-			g.fillRect(this.row, this.col, xSize, ySize);
-			needsRecoloring=false;
-			return;
-		}
-		if(color==1)
-		{
-			g.setColor(new Color(153, 102, 51));
-			origSquareColor=new Color(153, 102, 51);
-			g.fillRect(this.row, this.col, xSize, ySize);
-		}
-		else if(color==0)
-		{
-			g.setColor(new Color(223, 189, 159));
-			g.fillRect(this.row, this.col, xSize, ySize);
-			origSquareColor = new Color(223, 189, 159);
-		}
-		else if(color==3)
-		{
-			g.setColor(Color.BLUE);
-			g.fillRect(this.row, this.col, xSize, ySize);
-		}
-		else if(color==4)
-		{
-			g.setColor(origSquareColor);
-			g.fillRect(this.row, this.col, xSize, ySize);
-		}
-		
 		if(currentPiece!=null)
 		{
-			g.drawImage(currentPiece.getImage(),row+21,col+26,null);//21 and 26 are used to center the image on the square
+			g.drawImage(currentPiece.getImage(),21,26,null);//21 and 26 are used to center the image on the square
 		}
-		
-		//this is used when you move a piece so it needs to be removed from the old square
-		/*if(needsRemoving)
-		{
-			g.setColor(origSquareColor);
-			g.fillRect(this.row, this.col, xSize, ySize);
-			needsRemoving=false;
-		}
-		
-		if(needsRecoloring)
-		{
-			System.out.println("needs recoloring complete");
-			g.setColor(origSquareColor);
-			g.fillRect(this.row, this.col, xSize, ySize);
-			needsRecoloring=false;
-		}*/
-		
-		
 	}
 	
 	public int getRow() {
@@ -173,7 +133,7 @@ public class Square extends JComponent{
 	public int getCol() {
 		return col;
 	}
-
+/*
 	public int getColor() {
 		return color;
 	}
@@ -181,6 +141,7 @@ public class Square extends JComponent{
 	public void setColor(int color) {
 		this.color = color;
 	}
+	*/
 
 
 }
