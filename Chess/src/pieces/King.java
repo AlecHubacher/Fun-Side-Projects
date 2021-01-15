@@ -4,189 +4,141 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Game.Board;
+import Game.CheckMateDetection;
 import Game.Square;
 
 public class King extends Piece{
+	
+	private boolean north=false;
+	private boolean south=false;
+	private boolean east=false;
+	private boolean west=false;
+	private boolean nw=false;
+	private boolean sw=false;
+	private boolean ne=false;
+	private boolean se=false;
 	public ArrayList<Square> legalMoves = new ArrayList<Square>();
-	public King(Square[][] board,String imageFile, Square placement,String pieceColor) throws IOException {
-		super(board,imageFile, placement,pieceColor);
+	public King(Square[][] board,String imageFile, Square placement,String pieceColor,String pieceType) throws IOException {
+		super(board,imageFile, placement,pieceColor,pieceType);
 		this.placement=placement;
 		this.pieceColor=pieceColor;
 		this.board=board;
 	}
+	
 	public ArrayList<Square> getLegalMoves()
 	{
 		return legalMoves;
 	}
+	
+	private void isLegalMove(int row, int col, int direction)
+	{
+		if(board[row][col].getPiece() == null)//if square is empty
+		{
+			if(Board.detect.absoluteIsLegalMove(board[row][col],this.getColor()))
+			{
+				legalMoves.add(board[row][col]);
+			}
+		}
+		else
+		{
+			
+			if(!(board[row][col].getPiece().getColor().equalsIgnoreCase(this.getColor())))//square has enemy piece
+			{
+				legalMoves.add(board[row][col]);
+			}
+			switch(direction)
+			{
+				case 1:
+					north = true;
+					break;
+				case 2:
+					east = true;
+					break;
+				case 3:
+					south = true;
+					break;
+				case 4:
+					west = true;
+					break;
+				case 5:
+					nw = true;
+					break;
+				case 6:
+					ne = true;
+					break;
+				case 7:
+					sw = true;
+					break;
+				case 8:
+					se = true;
+					break;
+			}
+		}
+	}
+	
+	private boolean inBounds(int row, int col)
+	{
+		return (row >= 0 && row <= 7 && col >= 0 && col <= 7) ? true : false;
+	}
+	
 	@Override
 	public void populateLegalMoves() 
 	{
-		boolean n=true;
-		boolean s=true;
-		boolean e=true;
-		boolean w=true;
-		boolean nw=true;
-		boolean sw=true;
-		boolean ne=true;
-		boolean se=true;
+		north=false;
+		south=false;
+		east=false;
+		west=false;
+		nw=false;
+		sw=false;
+		ne=false;
+		se=false;
+		
 		int row = placement.getRow();
 		int col = placement.getCol();
-		for(int i=1;i<2;++i)
+		int i = 1;
+		legalMoves.add(board[row][col]);
+		
+		if(!north && inBounds(row-i, col) && i<=1) //this function finds all legal moves towards the north
 		{
-			//Rook type moves
-			if(row+i<=7 && s)//south checking if near edge of board
-			{
-				if(board[row+i][col].getPiece()==null || //if square is empty
-				!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col].getPiece().getColor())))//if pieces are enemies
-				{
-					legalMoves.add(board[row+i][col]);
-					//This if statement checks for if current square being checked is enemy then end checking this diagonal for legalSquares
-					if(board[row+i][col].getPiece()!=null && //if square is not empty
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col].getPiece().getColor())))// if pieces are enemies
-					{
-						s=false;
-					}
-				}
-				else
-				{
-					s=false;
-				}
-			}
-			if(col+i<=7 && e)//east
-			{
-				if(board[row][col+i].getPiece()==null || 
-						!(placement.getPiece().getColor().equalsIgnoreCase(board[row][col+i].getPiece().getColor())))
-						{
-							legalMoves.add(board[row][col+i]);
-							if(board[row][col+i].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row][col+i].getPiece().getColor())))// if pieces are enemies
-									{
-										e=false;
-									}
-						}
-						else
-						{
-							e=false;
-						}
-			}
-			if(row-i>=0 && n)//north
-			{
-				System.out.println("1");
-				if(board[row-i][col].getPiece()==null ||
-				!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col].getPiece().getColor())))
-						
-						{
-					System.out.println("2");
-							legalMoves.add(board[row-i][col]);
-							if(board[row-i][col].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col].getPiece().getColor())))// if pieces are enemies
-									{
-										n=false;
-									}
-						}
-						else
-						{
-							n=false;
-						}
-			}
-			if(col-i>=0 && w)//west
-			{
-				if(board[row][col-i].getPiece()==null || 
-						!(placement.getPiece().getColor().equalsIgnoreCase(board[row][col-i].getPiece().getColor())))
-						{
-							legalMoves.add(board[row][col-i]);
-							if(board[row][col-i].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row][col-i].getPiece().getColor())))// if pieces are enemies
-									{
-										w=false;
-									}
-						}
-						else
-						{
-							w=false;
-						}
-			}
-			//Bishop type moves
-			if(row+i<=7 && row+i>=0 && col+i<=7 && col+i>=0 && se)//south east checking if near edge of board
-			{
-				if(board[row+i][col+i].getPiece()==null || //if square is empty
-				!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col+i].getPiece().getColor())))//if pieces are enemies
-				{
-					legalMoves.add(board[row+i][col+i]);
-					//This if statement checks for if current square being checked is enemy then end checking this diagonal for legalSquares
-					if(board[row+i][col+i].getPiece()!=null && //if square is not empty
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col+i].getPiece().getColor())))// if pieces are enemies
-					{
-						se=false;
-					}
-				}
-				else
-				{
-					se=false;
-				}
-			}
-			if(row-i<=7 && row-i>=0 && col-i<=7 && col-i>=0 && nw)//north west
-			{
-				if(board[row-i][col-i].getPiece()==null || 
-						!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col-i].getPiece().getColor())))
-						{
-							legalMoves.add(board[row-i][col-i]);
-							if(board[row-i][col-i].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col-i].getPiece().getColor())))// if pieces are enemies
-									{
-										nw=false;
-									}
-						}
-						else
-						{
-							nw=false;
-						}
-			}
-			if(row+i<=7 && row+i>=0 && col-i<=7 && col-i>=0 && sw)//south west
-			{
-				System.out.println("1");
-				if(board[row+i][col-i].getPiece()==null ||
-				!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col-i].getPiece().getColor())))
-						
-						{
-					System.out.println("2");
-							legalMoves.add(board[row+i][col-i]);
-							if(board[row+i][col-i].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row+i][col-i].getPiece().getColor())))// if pieces are enemies
-									{
-										sw=false;
-									}
-						}
-						else
-						{
-							sw=false;
-						}
-			}
-			if(row-i<=7 && row-i>=0 && col+i<=7 && col+i>=0 && ne)//north east
-			{
-				if(board[row-i][col+i].getPiece()==null || 
-						!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col+i].getPiece().getColor())))
-						{
-							legalMoves.add(board[row-i][col+i]);
-							if(board[row-i][col+i].getPiece()!=null && //if square is not empty
-									!(placement.getPiece().getColor().equalsIgnoreCase(board[row-i][col+i].getPiece().getColor())))// if pieces are enemies
-									{
-										ne=false;
-									}
-						}
-						else
-						{
-							ne=false;
-						}
-			}
+			isLegalMove(row-i, col, 1);
 		}
+		if(!east && inBounds(row,col+i)) //this function finds all legal moves towards the east
+		{
+			isLegalMove(row, col+i, 2);
+		}
+		if(!south && inBounds(row+i,col)) //this function finds all legal moves towards the south
+		{
+			isLegalMove(row+i, col, 3);
+		}
+		if(!west && inBounds(row,col-i)) //this function finds all legal moves towards the west
+		{
+			isLegalMove(row, col-i, 4);
+		}
+		if(!nw && inBounds(row-i, col-i)) //this function finds all legal moves for the north west diagonal
+		{
+			isLegalMove(row-i, col-i, 5);
+		}
+		if(!ne && inBounds(row-i,col+i)) //this function finds all legal moves for the north east diagonal
+		{
+			isLegalMove(row-i, col+i, 6);
+		}
+		if(!sw && inBounds(row+i,col-i)) //this function finds all legal moves for the south west diagonal
+		{
+			isLegalMove(row+i, col-i, 7);
+		}
+		if(!se && inBounds(row+i,col+i)) //this function finds all legal moves for the south east diagonal
+		{
+			isLegalMove(row+i, col+i, 8);
+		}
+		
 		
 	}
 
 	@Override
 	public void showLegalMoves() 
 	{
-		for(int i=0;i<legalMoves.size();++i)
+		legalMoves.get(0).highlightMain();
+		for(int i=1;i<legalMoves.size();++i)
 		{
 			legalMoves.get(i).highlight();
 		}
@@ -198,9 +150,13 @@ public class King extends Piece{
 	{
 		for(int i=0;i<legalMoves.size();++i)
 		{
-			legalMoves.get(i).newColor(4);
+			legalMoves.get(i).makeOriginalColor();
 		}
-		legalMoves.clear();
 		
+	}
+	
+	public void clearLegalMoves()
+	{
+		legalMoves.clear();
 	}
 }
