@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -42,12 +43,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	public final static String wqueen = "C:\\Users\\Alec\\Desktop\\FunProjects\\Chess\\resources\\wqueen.png";
 	public final static String wrook = "C:\\Users\\Alec\\Desktop\\FunProjects\\Chess\\resources\\wrook.png";
 	
+	public static ArrayList<Piece> wTeam = new ArrayList<Piece>();
+	public static ArrayList<Piece> bTeam = new ArrayList<Piece>();
 	public String imageStr = "C:\\Users\\Alec\\Desktop\\FunProjects\\Chess\\resources\\wqueen.png";
 	public Image image = ImageIO.read(new File("C:\\Users\\Alec\\Desktop\\FunProjects\\Chess\\resources\\wqueen.png"));
 	public Square[][] board= new Square[8][8];
 	public int count =0;
-	public Square oldS;
-	public Square newS;
+	public Square startSquare;
+	public Square endSquare;
+	private Piece startPiece;
+	private Piece endPiece;
+	private Square oldS2;
+	public static boolean whiteTurn=true;
+	public static CheckMateDetection detect;
 	public Board(GameWindow gw) throws IOException
 	{
 		addMouseListener(this);
@@ -69,26 +77,34 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
         		{
         			if(j%2==0)
             		{
-            			board[i][j] = new Square(i,j,0,100,100);
+        				Color c = new Color(153, 102, 51);
+            			board[i][j] = new Square(i,j, 100, 100,c);
             			this.add(board[i][j]);
+            			board[i][j].setBackground(new Color(153, 102, 51));
             		}
             		else
             		{
-            			board[i][j] = new Square(i,j,1,100,100);
+            			Color c = new Color(223, 189, 159);
+            			board[i][j] = new Square(i,j, 100, 100,c);
             			this.add(board[i][j]);
+            			board[i][j].setBackground(new Color(223, 189, 159));
             		}
         		}
         		else
         		{
         			if((j+1)%2==0)
             		{
-            			board[i][j] = new Square(i,j,0,100,100);
+        				Color c = new Color(153, 102, 51);
+            			board[i][j] = new Square(i,j, 100, 100,c);
             			this.add(board[i][j]);
+            			board[i][j].setBackground(new Color(153, 102, 51));
             		}
             		else
             		{
-            			board[i][j] = new Square(i,j,1,100,100);
+            			Color c = new Color(223, 189, 159);
+            			board[i][j] = new Square(i,j, 100, 100,c);
             			this.add(board[i][j]);
+            			board[i][j].setBackground(new Color(223, 189, 159));
             		}
         		}
         	}
@@ -105,34 +121,53 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 
 	public void initPieces() throws IOException
 	{
-		board[0][0].put(new Rook(board, brook,board[0][0],"black"));
-		board[0][1].put(new Knight(board, bknight, board[0][1],"black"));
-		board[0][2].put(new Bishop(board, bbishop, board[0][2],"black"));
-		board[0][3].put(new Queen(board, bqueen, board[0][3],"black"));
-		board[0][4].put(new King(board, bking, board[0][4],"black"));
-		board[0][5].put(new Bishop(board, bbishop, board[0][5],"black"));
-		board[0][6].put(new Knight(board, bknight, board[0][6],"black"));
-		board[0][7].put(new Rook(board, brook, board[0][7],"black"));
+		board[0][0].put(new Rook(board, brook,board[0][0],"black","rook"));
+		board[0][1].put(new Knight(board, bknight, board[0][1],"black","knight"));
+		board[0][2].put(new Bishop(board, bbishop, board[0][2],"black","bishop"));
+		board[0][3].put(new Queen(board, bqueen, board[0][3],"black","queen"));
+		board[0][4].put(new King(board, bking, board[0][4],"black","king"));
+		board[0][5].put(new Bishop(board, bbishop, board[0][5],"black","bishop"));
+		board[0][6].put(new Knight(board, bknight, board[0][6],"black","knight"));
+		board[0][7].put(new Rook(board, brook, board[0][7],"black","rook"));
+		
 		
 		for(int i=0;i<8;++i)
 		{
-			board[1][i].put(new Pawn(board, bpawn, board[1][i],"black"));
+			bTeam.add(board[0][i].getPiece());
+			board[1][i].put(new Pawn(board, bpawn, board[1][i],"black","pawn"));
+			bTeam.add(board[1][i].getPiece());
 		}
 		
 		for(int i=0;i<8;++i)
 		{
-			board[6][i].put(new Pawn(board, wpawn, board[6][i],"white"));
+			board[6][i].put(new Pawn(board, wpawn, board[6][i],"white","pawn"));
 		}
 		
 		
-		board[7][0].put(new Rook(board, wrook,board[7][0],"white"));
-		board[7][1].put(new Knight(board, wknight, board[7][1],"white"));
-		board[7][2].put(new Bishop(board, wbishop, board[7][2],"white"));
-		board[7][3].put(new Queen(board, wqueen, board[7][3],"white"));
-		board[7][4].put(new King(board, wking, board[7][4],"white"));
-		board[7][5].put(new Bishop(board, wbishop, board[7][5],"white"));
-		board[7][6].put(new Knight(board, wknight, board[7][6],"white"));
-		board[7][7].put(new Rook(board, wrook, board[7][7],"white"));
+		board[7][0].put(new Rook(board, wrook,board[7][0],"white","rook"));
+		board[7][1].put(new Knight(board, wknight, board[7][1],"white","knight"));
+		board[7][2].put(new Bishop(board, wbishop, board[7][2],"white","bishop"));
+		board[7][3].put(new Queen(board, wqueen, board[7][3],"white","queen"));
+		board[7][4].put(new King(board, wking, board[7][4],"white","king"));
+		board[7][5].put(new Bishop(board, wbishop, board[7][5],"white","bishop"));
+		board[7][6].put(new Knight(board, wknight, board[7][6],"white","knight"));
+		board[7][7].put(new Rook(board, wrook, board[7][7],"white","rook"));
+		
+		for(int i=0;i<8;i++)
+		{
+			wTeam.add(board[7][i].getPiece());
+			wTeam.add(board[6][i].getPiece());
+		}
+		
+		detect = new CheckMateDetection(board, board[7][4].getPiece(), board[0][4].getPiece());
+		
+		for(int i=0;i<8;++i)
+		{
+			board[0][i].getPiece().setDetect(detect);
+			board[1][i].getPiece().setDetect(detect);
+			board[6][i].getPiece().setDetect(detect);
+			board[7][i].getPiece().setDetect(detect);
+		}
 		
 	}
 	
@@ -147,6 +182,40 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 				s.paintComponent(g);
 			}
 		}
+	}
+	
+	private boolean isLegalMove(Piece sPiece, Square eSquare)
+	{
+		if(!sPiece.getLegalMoves().contains(eSquare))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	private boolean sameColor(Piece sPiece, Piece ePiece)
+	{
+		if(sPiece.getColor().equalsIgnoreCase(ePiece.getColor()))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	private void movePiece(Piece sPiece, Square sSquare, Square eSquare)
+	{
+		startPiece.setPlacement(endSquare);
+		endSquare.put(startPiece);
+		startSquare.removePiece();
+		startPiece.removeHighlights();
+		startPiece.clearLegalMoves();
+		
 	}
 
 	@Override
@@ -164,37 +233,69 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		count++;
-		if(count==1)
+		if(count == 1)
 		{
-			oldS = (Square) this.getComponentAt(new Point(e.getX(),e.getY()));
-			if(oldS.getPiece()==null)//if a player clicks a square without a piece on it
+			startSquare = (Square) this.getComponentAt(new Point(e.getX(),e.getY()));
+			startPiece = startSquare.getPiece();
+			if(startPiece == null)
+			{
+				count = 0;
+				return;
+			}
+			if(startPiece.getColor().equalsIgnoreCase("white") && !whiteTurn || startPiece.getColor().equalsIgnoreCase("black") && whiteTurn)
 			{
 				count=0;
 				return;
 			}
-			oldS.getPiece().populateLegalMoves();
-			oldS.getPiece().showLegalMoves();
-			repaint();
+			startPiece.clearLegalMoves();
+			System.out.println("THIS SHOULD PRINT AFTER IN CHECK CLICK BISHOP");
+			startPiece.populateLegalMoves();
 			
+			startPiece.showLegalMoves();
 		}
 		else
 		{
-			newS = (Square) this.getComponentAt(new Point(e.getX(),e.getY()));
-			if(!(oldS.getPiece().getLegalMoves().contains(newS)))
+			endSquare = (Square) this.getComponentAt(new Point(e.getX(),e.getY()));
+			Piece endPiece = endSquare.getPiece();
+			
+			if(isLegalMove(startPiece, endSquare))
 			{
-				System.out.println("not legal");
-				count=0;
+				movePiece(startPiece, startSquare, endSquare);
+				if(startPiece instanceof Pawn)
+				{
+					startPiece.setFirstMoveDone();
+				}
+				count = 0;
+				detect.setLastPieceMoved(startPiece);
+				if(detect.isInCheck(whiteTurn))
+				{
+					detect.getWking().populateLegalMoves();
+					detect.getBking().populateLegalMoves();
+				}
+				
+				repaint();
+				whiteTurn = whiteTurn ? false : true;
 				return;
 			}
-			newS.put(oldS.getPiece());//sets currentPiece of square 
-			oldS.getPiece().removeHighlights();
-			oldS.removePiece();//sets currentPiece of oldS
-			newS.getPiece().setPlacement(newS);//sets the currentSquare that the piece is on
- 
-			newS.getPiece().setFirstMove(false);
-			
-			count=0;
-			repaint();
+			else
+			{
+				if(endSquare.getPiece() == null)
+				{
+					count = 0;
+					return;
+				}
+				if(sameColor(startPiece, endPiece))
+				{
+					startPiece.removeHighlights();
+					startPiece.clearLegalMoves();
+					endPiece.populateLegalMoves();
+					endPiece.showLegalMoves();
+					count = 1;
+					startPiece = endPiece;
+					startSquare = endSquare;
+					return;
+				}
+			}
 		}
 	}
 
