@@ -2,14 +2,16 @@ package pieces;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import Game.Board;
+import Game.CheckMateDetection;
 import Game.Square;
 
 public class Knight extends Piece{
 	ArrayList<Square> legalMoves = new ArrayList<Square>();
-	public Knight(Square[][] board,String imageFile, Square placement,String pieceColor) throws IOException {
-		super(board,imageFile, placement,pieceColor);
+	public Knight(Square[][] board,String imageFile, Square placement,String pieceColor,String pieceType) throws IOException {
+		super(board,imageFile, placement,pieceColor,pieceType);
 		this.placement=placement;
 		this.pieceColor=pieceColor;
 		this.board=board;
@@ -19,82 +21,81 @@ public class Knight extends Piece{
 	{
 		return legalMoves;
 	}
+	
+	private void isLegalMove(int row, int col)
+	{
+		if(detect.isKingInCheck())
+		{
+			if(detect.getPathToKing().contains(board[row][col]))
+			{
+				System.out.println("The square is legal");
+				legalMoves.add(board[row][col]);
+				return;
+			}
+		}
+		else if(board[row][col].getPiece() == null)//if square is empty
+		{
+			legalMoves.add(board[row][col]);
+		}
+		else if(!(board[row][col].getPiece().getColor().equalsIgnoreCase(this.getColor())))//square has enemy team piece
+		{
+			legalMoves.add(board[row][col]);
+		}
+	}
+	
+	private boolean inBounds(int row, int col)
+	{
+		return (row >= 0 && row <= 7 && col >= 0 && col <= 7) ? true : false;
+	}
+	
 	@Override
 	public void populateLegalMoves() 
 	{
 		int row = placement.getRow();
 		int col = placement.getCol();
-		if(row+2<=7 && col+1<=7)
+		legalMoves.add(board[row][col]);
+		
+		
+		if(inBounds(row-2,col-1))//checks top left square
 		{
-			
-			if(board[row+2][col+1].getPiece()==null || //if square is empty. Normal L shape
-			!(placement.getPiece().getColor().equalsIgnoreCase(board[row+2][col+1].getPiece().getColor())))//if pieces are enemies
-			{
-				legalMoves.add(board[row+2][col+1]);
-			}
+			isLegalMove(row-2, col-1);
 		}
-		if(row+2<=7 && col-1>=0) //Mirror of normal L shape
+		if(inBounds(row-2, col+1))
 		{
-			if(board[row+2][col-1].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row+2][col-1].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row+2][col-1]);
-					}
+			isLegalMove(row-2, col+1);
 		}
-		if(row-2>=0 && col+1<=7)//upside down normal L
+		if(inBounds(row-1, col-2))
 		{
-			if(board[row-2][col+1].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row-2][col+1].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row-2][col+1]);
-					}
+			isLegalMove(row-1, col-2);
 		}
-		if(row-2>=0 && col-1>=0)//Mirror of upside down normal L
+		if(inBounds(row-1, col+2))
 		{
-			if(board[row-2][col-1].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row-2][col-1].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row-2][col-1]);
-					}
+			isLegalMove(row-1, col+2);
 		}
-		if(col-2>=0 && row+1<=7)//left side down L
+		if(inBounds(row+2, col-1))
 		{
-			if(board[row+1][col-2].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row+1][col-2].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row+1][col-2]);
-					}
+			isLegalMove(row+2, col-1);
 		}
-		if(col-2>=0 && row-1>=0)//left side up L
+		if(inBounds(row+2, col+1))
 		{
-			if(board[row-1][col-2].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row-1][col-2].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row-1][col-2]);
-					}
+			isLegalMove(row+2, col+1);
 		}
-		if(col+2<=7 && row-1>=0)//right side up L
+		if(inBounds(row+1, col-2))
 		{
-			if(board[row-1][col+2].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row-1][col+2].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row-1][col+2]);
-					}
+			isLegalMove(row+1, col-2);
 		}
-		if(col+2<=7 && row+1<=7)
+		if(inBounds(row+1, col+2))
 		{
-			if(board[row+1][col+2].getPiece()==null || //if square is empty. Normal L shape
-					!(placement.getPiece().getColor().equalsIgnoreCase(board[row+1][col+2].getPiece().getColor())))//if pieces are enemies
-					{
-						legalMoves.add(board[row+1][col+2]);
-					}
+			isLegalMove(row+1, col+2);
 		}
+		
 	}
 
 	@Override
 	public void showLegalMoves() 
 	{
-		for(int i=0;i<legalMoves.size();++i)
+		legalMoves.get(0).highlightMain();
+		for(int i=1;i<legalMoves.size();++i)
 		{
 			legalMoves.get(i).highlight();
 		}
@@ -106,9 +107,13 @@ public class Knight extends Piece{
 	{
 		for(int i=0;i<legalMoves.size();++i)
 		{
-			legalMoves.get(i).newColor(4);
+			legalMoves.get(i).makeOriginalColor();
 		}
-		legalMoves.clear();
 		
+	}
+	
+	public void clearLegalMoves()
+	{
+		legalMoves.clear();
 	}
 }
